@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="MainActivity"
+    android:orientation="vertical"
+    android:background="@drawable/bj"
+    tools:layout_editor_absoluteY="25dp">
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@color/colorPrimary"-->
+    <!--        android:minHeight="?attr/actionBarSize"-->
+    <!--        android:paddingEnd="20dp"-->
+    <!--        app:title="游戏列表"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:titleTextColor="@android:color/white"/>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<!--            <VideoView-->
+<!--                android:id="@+id/video_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp">-->
+
+<!--            </VideoView>-->
+
+<!--            <io.vov.vitamio.widget.CenterLayout-->
+<!--                android:id="@+id/dd"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:orientation="vertical" >-->
+<!--                <io.vov.vitamio.widget.VideoView-->
+<!--                    android:id="@+id/vitamio"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="200dp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true" />-->
+<!--            </io.vov.vitamio.widget.CenterLayout>-->
+<!--            <com.google.android.exoplayer2.ui.PlayerControlView  -->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_width="match_parent"/>-->
+
+<!--            <com.google.android.exoplayer2.ui.PlayerView-->
+<!--                android:id="@+id/player_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                app:resize_mode="fill"/>-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="486px"/>
+            <LinearLayout
+                android:id="@+id/Page_settings"
+                android:layout_width="60px"
+                android:layout_height="60px"
+                android:layout_marginTop="40px"
+                android:layout_marginLeft="40px"
+                android:translationZ="2px"/>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Is the device online"
+                    android:layout_marginLeft="46px"
+                    android:textColor="@color/white"
+                    android:textSize="37px" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/l_top_Onlines"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="online"
+                    android:textColor="@color/c_FFBD2F"
+                    android:textSize="37px" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/l_top_Online"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="online"
+                    android:textColor="@color/c_FFBD2F"
+                    android:textSize="37px" />
+
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/home_refresh"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Refresh"
+                    android:textColor="@color/white"
+                    android:textSize="37px" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ferr_liner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60px"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Free mode"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22dp">
+
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_liner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60px"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Trial time:    "
+                    android:textColor="@color/white"
+                    android:textSize="53px" />
+
+
+                <TextView
+                    android:id="@+id/time_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="00:00:00"
+                    android:textColor="@color/c_FFBD2F"
+                    android:textSize="53px" />
+<!--                <TextView-->
+<!--                    android:id="@+id/testImer"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="right"-->
+<!--                    android:text="texttime:    "-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="53px" />-->
+<!--                <Button-->
+<!--                    android:id="@+id/butsss"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="right"-->
+<!--                    android:text="点击测试"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="53px" />-->
+            </LinearLayout>
+                <RadioGroup
+                    android:id="@+id/ll_home_radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="58px"
+                    android:layout_marginLeft="58px"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/ll_home_choose_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:gravity="center_horizontal"
+                        android:text="All"
+                        android:visibility="gone"
+                        android:textAlignment="center"
+                        android:textColor="@drawable/selector_main_rb_text"
+                        android:textSize="44px" />
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Hotlist"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="2dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="HotList"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Movement"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="6dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Sports"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Shoot"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="7dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Shooting"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Strategy"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="8dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Strategy"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Adventure"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="8dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Adventure"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Leisure"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="8dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Leisure"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Plot"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="8dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Plot"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Puzzle"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="8dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Puzzle"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                    <!--                <RadioButton-->
+                    <!--                    android:visibility="gone"-->
+                    <!--                    android:id="@+id/ll_home_choose_Other"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_marginLeft="8dp"-->
+                    <!--                    android:button="@null"-->
+                    <!--                    android:gravity="center_horizontal"-->
+                    <!--                    android:text="Others"-->
+                    <!--                    android:textAlignment="center"-->
+                    <!--                    android:textColor="@drawable/selector_main_rb_text"-->
+                    <!--                    android:textSize="18.5sp" />-->
+
+                </RadioGroup>
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:background="@drawable/background_color"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent" >
+            </androidx.recyclerview.widget.RecyclerView>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flexbox_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="27px"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    >
+                </com.google.android.flexbox.FlexboxLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+
+</LinearLayout>

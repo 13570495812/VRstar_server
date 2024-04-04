@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    &lt;!&ndash;    选择状态情况下&ndash;&gt;-->
+    <item android:color="@color/c_FFBD2F" android:state_checked="true"/>
+<!--&lt;!&ndash;    经常情况&ndash;&gt;-->
+    <item android:color="@color/white" />
+<!--    <item android:state_checked="true" android:drawable="@drawable/button_selected" ></item>-->
+<!--    <item android:state_checked="false" android:drawable="@drawable/button_unselected"></item>-->
+</selector>

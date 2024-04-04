@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">VrStar</string>
+
+    <string name="common_ok">Ok</string>
+    <string name="common_confirm">Ok</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_exit">Exit</string>
+    <string name="common_error">Error</string>
+
+    <string name="auto_play_hdmi">Auto Play</string>
+    <string name="play_hdmi_loading">Loading......</string>
+    <string name="play_hdmi_error">HDMI-IN No Signal!</string>
+</resources>

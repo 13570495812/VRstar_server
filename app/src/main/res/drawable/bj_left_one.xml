@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--实现应用背景颜色横向渐变-->
+    <gradient
+        android:startColor="#ffaa1d5d"
+        android:endColor="#ff17224f"
+        android:gradientRadius="205dp"
+        android:useLevel="true"
+        android:centerX="0"
+        android:centerY="0"
+        android:angle="90"/>
+    <corners android:radius="5dp"  />
+</shape>
+
+
+<!--<item android:width="395dp" android:height="205dp">-->
+<!--<shape android:shape="rectangle">-->
+<!--    <solid android:color="#ff000000" />-->
+<!--    <gradient android:type="reflected"-->
+<!--        android:useLevel="true"-->
+<!--        android:startColor="#ffaa1d5d"-->
+<!--        android:endColor="#ff17224f" android:centerX="0"-->
+<!--        android:centerY="0" android:gradientRadius="205dpdp" />-->
+<!--    <corners android:topLeftRadius="5dp" android:topRightRadius="5dp"-->
+<!--        android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" />-->
+<!--</shape>-->
+<!--</item>-->
