@@ -14,24 +14,48 @@ import java.util.logging.Level;
 
 public class Read_coin_file {
     /**
-     * ip地址文件名
+     * 时间
      */
-    String FILENAME = "JAMMA.txt";
-
+    String FORTIMEFILE = "FORTIME.txt";  // 投币时间
+    String FILENAME = "JAMMA.txt";  // 投币时间
     String IsItFree = "Free.txt";  // 是否免费
     /*是否免费模式*/
     String is_ferr = "";
+    // 投币保存时间
     String minutes_number= "";
+    // 循环时间
 
+    String forTime= "";
 
     /*投币游戏时间*/
    ;
     /*当天的投币数量*/
     /*一个月的投币数量*/
-
-    public String minutes() {
-        return Getminutes();
+/***
+ * 保存循环时间
+ */
+public String ReturForTime() {
+    if(GETFORTIME().equals(null) || GETFORTIME().equals("")){
+        return "0";
+    }else {
+        return GETFORTIME();
     }
+
+}
+    /**
+     *
+     * @return 保存投币时间开始
+     */
+    // 返回投标时间
+    public String minutes() {
+        if(Getminutes().equals(null) || Getminutes().equals("")){
+            return "0";
+        }else {
+            return Getminutes();
+        }
+    }
+
+//    是否免费模式
     public String ferr() {
         return GetFerr();
     }
@@ -41,41 +65,51 @@ public class Read_coin_file {
 //        return GetFerr();
 //    }
     /**
-     * 修改时间
+     * 点击保存修改时间含税
      */
     public void changeTime(String time){
-//        Log.e(TAG,"121212122121MM"+time);
         minutes_number=time;
         Save_time();
     }
     /**
-     * 修改时间
+     * 点击修改投币时间
      */
     public void changeFerr(String ferr){
         is_ferr=ferr;
         Save_Free();
     }
+
     /**
-     * 转换返回毫秒
-     *
-     * @return
+     * 投币修改时间
      */
-    public int changeTimeMillisecond(){
-        return Integer.parseInt(Getminutes()) * 60000;
+    public void changeForTime(String forT){
+        forTime= forT;
+        Save_FORtime();
+    }
+    /**
+     * 保存循环时间
+     */
+    public void Save_FORtime() {
+        try {
+            FileOutputStream fileCoun =M_this.openFileOutput(FORTIMEFILE, Context.MODE_PRIVATE);
+            fileCoun.write(forTime.getBytes());
+            fileCoun.close();
+
+//            Toast.makeText(M_this, "保存成功", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * 保存时间
      */
     public void Save_time() {
-//        Toast.makeText(M_this, getSerialNumber(), Toast.LENGTH_LONG).show();
-//        Log.e(TAG,"787878MMMMMMMMM"+minutes_number);
-
         try {
             FileOutputStream fileCoun =M_this.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fileCoun.write(minutes_number.getBytes());
             fileCoun.close();
-            Toast.makeText(M_this, "保存成功", Toast.LENGTH_LONG).show();
+//            Toast.makeText(M_this, "保存成功", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,7 +128,7 @@ public class Read_coin_file {
         /*保存IP提醒框*/
 
     /**
-     * 时间获取获取
+     * 读取时间文件夹
      *
      * @return
      */
@@ -110,12 +144,14 @@ public class Read_coin_file {
             }
             inStream.close();
             minutes_number = StringBuilder.toString();
+//            Log.e("我是时间",minutes_number);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return minutes_number;
     }
 
+    // 是否免费模式读取
     public String GetFerr() {
         try {
             FileInputStream inStream = M_this.openFileInput(IsItFree);
@@ -132,5 +168,21 @@ public class Read_coin_file {
         }
         return is_ferr;
     }
-
+    // 倒计时时间读取
+    public String GETFORTIME() {
+        try {
+            FileInputStream inStream = M_this.openFileInput(FORTIMEFILE);
+            int len = 0;
+            byte[] buf = new byte[1024];
+            StringBuilder StringBuilder = new StringBuilder();
+            while ((len = inStream.read(buf)) != -1) {
+                StringBuilder.append(new String(buf, 0, len));
+            }
+            inStream.close();
+            forTime= StringBuilder.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return forTime;
+    }
 }

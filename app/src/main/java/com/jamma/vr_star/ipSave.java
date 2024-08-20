@@ -50,16 +50,39 @@ public class ipSave extends AppCompatActivity {
     private Button ll_save;
     private Switch switchRad;
 
+    private Button openall;
+    private Button open1;
+    private Button open2;
+    private Button open3;
+
+    private Button closeall;
+    private Button cloos1;
+    private Button cloos2;
+    private Button cloos3;
+
+    private Button tb_open;
+    private Button tb_close;
+
+    private UdpTool udpTool;
+    private MainActivity mainActivity;
+    private  static final String O_="OPENALL";
+    private  static final String O1_="OPEN1";
+    private  static final String O2_="OPEN2";
+    private  static final String O3_="OPEN3";
+
+    private  static final String C_="CLOSEALL";
+    private  static final String C1_="CLOSE1";
+    private  static final String C2_="CLOSE2";
+    private  static final String C3_="CLOSE3";
+    private  static final String UDPIP_="192.168.188.255";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_ip);
         /*初始化自动*/
         Init();
-
     }
-
     private void Init() {
         ll_eTxtIP = findViewById(R.id.ll_set_eTxtIP);
         wifiname = (TextView) findViewById(R.id.tv_WIFI_name);
@@ -67,6 +90,21 @@ public class ipSave extends AppCompatActivity {
         tvSettings = (Button) findViewById(R.id.tv_Settings);
         ll_save = findViewById(R.id.ll_set_save);
         switchRad = (Switch) findViewById(R.id.switch1);
+        /*投币*/
+//        tb_open = findViewById(R.id.tb_open);
+//        tb_close = findViewById(R.id.tb_close);
+        /*特效按钮*/
+//        openall = findViewById(R.id.openALL);
+//        open1 = findViewById(R.id.open1);
+//        open2 = findViewById(R.id.open2);
+//        open3 = findViewById(R.id.open3);
+//
+//        closeall = findViewById(R.id.closeALL);
+//        cloos1 = findViewById(R.id.close1);
+//        cloos2 = findViewById(R.id.close2);
+//        cloos3 = findViewById(R.id.close3);
+        /*udp 发送数据*/
+        mainActivity = new MainActivity();
         /*获取网线 ip地址*/
         SERVER_IP=getLocalIp();
         wifiname.setText(SERVER_IP);
@@ -75,12 +113,8 @@ public class ipSave extends AppCompatActivity {
         /*读取时间*/
 //        String a = coinipSave.Getminutes();
 //         Log.e(TAG,"0000000m"+a);
-
 //        Log.e(TAG,"1111100000001111111m"+coinipSave.minutes());
-
-
         if(coinipSave.minutes().equals("")){
-
             ll_eTxtIP.setText("10");
             coinipSave.changeTime("10");
 //            coinipSave.Save_time();
@@ -94,16 +128,13 @@ public class ipSave extends AppCompatActivity {
         if(coinipSave.ferr().equals("")){
             switchRad.setChecked(false);
             coinipSave.changeFerr("0");
-
         }
         if(coinipSave.ferr().equals("0")){
             switchRad.setChecked(false);
         }
         if(coinipSave.ferr().equals("1")){
-//            Log.e(TAG,"k7777770"+coinipSave.ferr());
             switchRad.setChecked(true);
         }
-
 //        Log.e(TAG,"kljk"+downTimer);
 //        getDownTimer();
         /*初始化方法*/
@@ -137,10 +168,6 @@ public class ipSave extends AppCompatActivity {
             public void onClick(View v) {
 //                coinipSave.changeTime("10");
                 coinipSave.changeTime(ll_eTxtIP.getText().toString());
-
-//                finish();
-//                int d = coinipSave.changeTimeMillisecond();
-//                Log.e(TAG,"我是毫秒"+d);
             }
         });
         switchRad.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -156,9 +183,101 @@ public class ipSave extends AppCompatActivity {
 
             }
         });
+//        openall.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(O_,UDPIP_);
+//
+////                mainActivity.sendMes
+//            }
+//        });
+//        open1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(O1_,UDPIP_);
+//            }
+//        });
+//        open2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(O2_,UDPIP_);
+//            }
+//        });
+//        open3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(O3_,UDPIP_);
+//            }
+//        });
+
+//        closeall.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(C_,UDPIP_);
+//            }
+//        });
+//        cloos1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(C1_,UDPIP_);
+//            }
+//        });
+//        cloos2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(C2_,UDPIP_);
+//            }
+//        });
+//        cloos3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                mainActivity.M_this.udpTool.sendMessage(C3_,UDPIP_);
+//            }
+//        });
+        // 打开投币
+//        tb_open.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mainActivity.M_this.tb_open();
+//            }
+//        });
+//        tb_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mainActivity.M_this.tb_close();
+//            }
+//        });
 
     }
-
+    /*打开*/
+//    private void UDPstartC1(String str,String ip) {
+//        if (ip!=null){
+//            udpTool.sendMessage(str,ip);
+//        }else {
+////            Toast.makeText(MainActivity.this, "请输入对方ip和端口", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//    private void UDPstartC2(String  str,String ip) {
+//        if (ip!=null){
+//            udpTool.sendMessage(str,ip);
+//        }else {
+////            Toast.makeText(MainActivity.this, "请输入对方ip和端口", Toast.LENGTH_SHORT).show();
+//        }
+//    }    private void UDPstartC3(String  str,String ip) {
+//        if (ip!=null){
+//            udpTool.sendMessage(str,ip);
+//        }else {
+////            Toast.makeText(MainActivity.this, "请输入对方ip和端口", Toast.LENGTH_SHORT).show();
+//        }
+//    }
     /**
      * 得到有限网关的IP地址
      *
@@ -198,7 +317,31 @@ public class ipSave extends AppCompatActivity {
 
     }
     @Override
+    protected void onStart() {
+        super.onStart();
+
+//        Log.e("ip","我是onStart");
+//        initializePlayer();
+    }
+    @Override
     protected void onResume() {
         super.onResume();
+//        Log.e("ip","我是onResume");
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        releasePlayer();
+//        Log.e("11","我在退出");
+//        Log.e("ip","我是onStop");
+//        udpTool.closeSocket();
+    }
+
+
+
+//    @Override
+//    protected void OnRestart(){
+//        super.onResume();
+//        Log.e("11","我在退出");
+//    }
 }

@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="29dp"
             android:layout_marginEnd="8dp"
-            android:text="JAMMA  VR star"
+            android:text="JAMMA"
             android:textAlignment="center"
             android:textColor="@android:color/background_dark"
             android:textSize="18sp"
@@ -173,11 +173,133 @@
             android:padding="15dp"
             android:layout_marginTop="30dp"
             android:background="#dddddd"
-
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="450dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <Button-->
+<!--            android:id="@+id/openALL"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="全部打开"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/open1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="打开震动"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/open2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="打开风 "-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/open3"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="打开香水 "-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--    </LinearLayout>-->
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="520dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <Button-->
+<!--            android:id="@+id/closeALL"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="全部关闭"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/close1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="关闭震动"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/close2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="关闭风 "-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/close3"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="关闭香水 "-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--    </LinearLayout>-->
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="600dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <Button-->
+<!--            android:id="@+id/tb_open"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="打开投币器"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/tb_close"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="关闭投币器"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="#dddddd"-->
+<!--            android:layout_marginLeft="5dp"/>-->
 
-
-
+<!--    </LinearLayout>-->
 
 </FrameLayout>

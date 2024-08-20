@@ -177,7 +177,6 @@ public class UsbHost  extends BroadcastReceiver{
 //        mp=act.findViewById(R.id.textView7);
         init();
     }
-
     /***
      * 初始化监听接口
      */
@@ -187,7 +186,6 @@ public class UsbHost  extends BroadcastReceiver{
         registerUsbAction();
         start();
     }
-
     /***
      * 动态获取权限@detach
      */
@@ -214,8 +212,6 @@ public class UsbHost  extends BroadcastReceiver{
         }
 //        mDevices.setText(devices);
     }
-
-
     /***
      * 主设备和usb设备监理连接，在此之前需连接设备，并获取权限，否者连接失败
      */
@@ -230,7 +226,9 @@ public class UsbHost  extends BroadcastReceiver{
                     return;
                 }
                 mDriver.getPort().open(mConn);
-                Log.e(TAG,"建立usb_otg通道成功");
+
+//                Log.e(TAG,"建立usb_otg通道成功");
+
 //                info="建立usb_otg通道成功";
                 info = "online";
 
@@ -295,7 +293,6 @@ public class UsbHost  extends BroadcastReceiver{
             mSerialIoManager.writeAsync(bData);
         }
     }
-
     /***
      * 发送单字节数据
      * @param bData 数据流
@@ -304,8 +301,6 @@ public class UsbHost  extends BroadcastReceiver{
         byte[] data={bData};
         sendMSG(data);
     }
-
-
     /***
      * 销毁
      */
@@ -313,7 +308,6 @@ public class UsbHost  extends BroadcastReceiver{
         mContext.unregisterReceiver(this);
         clean();
     }
-
     /***
      * 广播监听，在此处用于usb设备权限监听，usb设备插入拔出监听
      * @param context
@@ -334,7 +328,6 @@ public class UsbHost  extends BroadcastReceiver{
                     Toast.makeText(mContext,"请求usb读写权限失败，无法进行usb-otg通信",Toast.LENGTH_SHORT).show();
                 }
                 break;*/
-
                 case UsbManager.ACTION_USB_DEVICE_ATTACHED:
                 UsbDevice device_add = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
                 UsbSerialDriver driver_add=UsbSerialProber.getDefaultProber().probeDevice(device_add);
@@ -361,7 +354,6 @@ public class UsbHost  extends BroadcastReceiver{
                 break;
         }
     }
-
     /***
      * activity的onResume调用
      */

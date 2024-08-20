@@ -38,7 +38,7 @@ public class HdmiActivity extends AppCompatActivity {
 //        ctx = this;
 //        act = this;
         aInt = new Intent();
-hdmiActivity = this;
+        hdmiActivity = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_hdmi);
@@ -47,14 +47,13 @@ hdmiActivity = this;
         mPreview = new Preview[mCameraNum];
         mCamera = new Camera[mCameraNum];
         for (int i = 0; i < mCameraNum; i++) {
-            Log.e("mmmmm",""+i);
+//            Log.e("mmmmm",""+i);
             surfaViews[i] = new SurfaceView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
             lp.setMargins(10, 10, 10, 10);
             surfaViews[i].setLayoutParams(lp);
             ((LinearLayout) findViewById(R.id.layout1)).addView(surfaViews[i]);
-
             mPreview[i] = new Preview(this, surfaViews[i]);
             mPreview[i].setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
             ((FrameLayout) findViewById(R.id.layout)).addView(mPreview[i]);
@@ -65,13 +64,13 @@ hdmiActivity = this;
         @Override
         public  void handleMessage(Message msg){
             switch (msg.what){
-                case 0://返回主页面
+                case 1://返回主页面
                     hdmiActivity.startActivity(new Intent(hdmiActivity,MainActivity.class));;
                     break;
-
             }
         }
     };
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -81,8 +80,8 @@ hdmiActivity = this;
                 mPreview[i].setCamera(mCamera[i]);
             } catch (Throwable e) {
                 Log.e(TAG, "Camera[" + i + "] exception: " + e.getMessage(), e);
-                Toast.makeText(this, "Camera[" + i + "] exception: " + e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Camera[" + i + "] exception: " + e.getMessage(),
+//                        Toast.LENGTH_LONG).show();Ïf
             }
         }
     }
@@ -111,7 +110,7 @@ public void onReceive(Context context, Intent intent) {
     }
     public void myMethod() {
         Message message = new Message(); //发送消息给线程，用来返回
-        message.what =0;
+        message.what =1;
         handler.sendMessage(message);
         mainActivity.isOpne=false;
 

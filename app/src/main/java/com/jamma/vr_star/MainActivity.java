@@ -105,7 +105,7 @@ import java.util.concurrent.TimeUnit;
 //import io.vov.vitamio.LibsChecker;
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
-//    private TextView service;
+    //    private TextView service;
 //    private TextView client;
 //    private TextView usbBotton;
 
@@ -127,6 +127,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     public static final String TAG = "MainActivity";
     /*游戏报名*/
     public static  String PackName="";
+
+
+    public static  String DATA_HOT = "01";  //
+    public static  String Free_Not = "01";  // 是否免费模式
+    public static  String In_Game = "01";   // 是否游戏打开中
+    public static  String DATA_TIME = "0";  // 时间
+    public static  String SK_CONNECTED = "01";  // 是否连接成功
+    public static  String END_CODE = "11";  // 结束码
+
     public static final String DEFAULT_SOCKETMODE = "OTG";
     /***  必须*/
     public static String SocketModeAPI = DEFAULT_SOCKETMODE;
@@ -138,12 +147,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     public static int Port = 9000;
 
     public static int GetCacheTime = 0;
-
     /**
      * 游戏倒计时时间
      */
     public static boolean isTime = false;
     public static int CountDownGameTimes = 0;
+
 
     public static String DownGameTimes = "00:00:00";
     private static DevicePolicyManager policyManager;
@@ -182,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private LinearLayout p_setting;
     private TextView dialog_opne;
     private AlertDialog dialog;
-    private int POWER_OFF_MSG_D = 11115;
+//    private int POWER_OFF_MSG_D = 11115;
     // 是否点击open
     public boolean isOpne = false;
     //是否关机
@@ -193,6 +202,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private boolean isDialog=false;
     //剩余硬币
     private Socket mSocket;
+
+    public int addTime;
     public static int Coin = 0;
     //单次硬币
     public static int CoinSum = 1;
@@ -218,19 +229,21 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
 //    private MainActivity.SocketAcceptThread socketAcceptThread;
     private TextView xml_time;
-    private ACache mCache; // 缓存
+    public ACache mCache; // 缓存
     private TextView l_top_onlines;
     private static HdmiActivity hdmiIn;
     private ServiceActivity server_socket;
     private ipSave coin;
-    private Read_coin_file coinipSave;
+    public Read_coin_file coinipSave;
     private LinearLayout lferr_mode;
     private LinearLayout ltime_liner;
 
+    public UdpTool udpTool;
+
+
+    TextView receiveMsg;
 //    private TextView testImer;
 //    private Button but_sss;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,14 +251,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         M_this = this;
         /*投币信息*/
         coinipSave = new Read_coin_file();
+//        udpTool=new UdpTool(this);
         initView();  //初始化
-
 //        setListener();
         /**
          *-----------------------ubs界面融合代码开始--------------------
          */
     }
-
     /**
      * 倒计时
      */
@@ -256,25 +268,26 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         }
         @Override
         public void onTick(long millisUntilFinished) {
-            int totalSeconds = (int) (millisUntilFinished / 1000);
-            //            int totalSeconds = (int) (millisUntilFinished/1000);
-//            Log.d("tog","=================="+totalSeconds);
-            long milliseconds = TimeUnit.SECONDS.toMillis(totalSeconds); // 30秒转换为毫秒
+            int totalSeconds = (int) (millisUntilFinished);
+//            Log.e("myCountDownTimer",""+totalSeconds);
+             int totalSecondsL = (int) (millisUntilFinished/1000);
+//            Log.d("tog","=================="+totalSecondsL);// 秒
+            long milliseconds = TimeUnit.SECONDS.toMillis(totalSecondsL); // 30秒转换为毫秒
 //            int intValue = (int) milliseconds;
-//            Log.e(TAG,"我是分转换秒"+intValue);
+            M_this.DATA_TIME =Integer.toString(totalSecondsL);
+//            Log.e(TAG,"我是分转换秒"+M_this.DATA_TIME);
+//            mCache.put("TimeCache", Long.toString(milliseconds));
 
-            mCache.put("TimeCache", Long.toString(milliseconds));
-            long seconds = totalSeconds % 60;
-            long minutes = (totalSeconds / 60) % 60;
-            long hours = totalSeconds / 3600;
+            long seconds = totalSecondsL % 60;
+            long minutes = (totalSecondsL / 60) % 60;
+            long hours = totalSecondsL / 3600;
             String a = new Formatter().format("%02d:%02d:%02d", hours, minutes, seconds).toString();
 //            Log.d(TAG, "---------------时间倒计时---------" + a);
             DownGameTimes = new Formatter().format("%02d:%02d:%02d", hours, minutes, seconds).toString();
             xml_time.setText(DownGameTimes);
-
-
+            M_this.coinipSave.changeForTime(String.valueOf(totalSecondsL));
+            M_this.isTime=true;
         }
-
         @Override
         public void onFinish() {
             isStartTime = false;
@@ -282,6 +295,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             xml_time.setText("00:00:00");
             myCountDownTimer.cancel();
             CountDownGameTimes=0;
+
+            M_this.coinipSave.changeForTime("0");
+            M_this.isTime=false;
 //            M_this.mCache.put("TimeCache", CountDownGameTimes);
 
 //            TgSystem.setTopApp(MainActivity.thi
@@ -311,7 +327,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             }
         }
     }
-
     /*获取本地头部列表JSON文件件*/
     public JSONArray getFileNavigation() {
         JSONArray jsonArray = null;
@@ -328,7 +343,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 //        Log.e(TAG,"========file4file4file4file4========"+file4);
         String folderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/jamma/";
         File file = new File(folderPath, "navigation.json");
-
         try {
             FileInputStream inputStream = new FileInputStream(file);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -346,7 +360,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         }
         return jsonArray;
     }
-
     /*获取本地JSON文件件*/
     public JSONArray getFilePermission() {
         JSONArray jsonArrayList = null;
@@ -385,7 +398,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         }
         return jsonArray;
     }
-
     /*JSON文件读取游戏列表数据*/
     public void getNavList() {
         RadioGroup radioGroup = findViewById(R.id.ll_home_radioGroup);
@@ -483,11 +495,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-
         }
-
     }
-
     /*JSON文件读取游戏列表数据*/
     public void getJsonList() {
         FlexboxLayout flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout); // 大布局
@@ -547,47 +556,70 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                     openStart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            String Packag = (String) v.getTag();
+//                            String GetTimes = "";
+                            String Packag = (String) v.getTag();
                             PackName = (String) v.getTag();
-                            Log.e(TAG, PackName);
+//                            Log.e(TAG, PackName);
                             if (PackName.endsWith("mp4")) {
                                 //启动视频播放器播放视频
 //                                fragmentCallback.onVideoClicksendMsgToActivity(Packag);
                             } else {
-                                String GetTime = mCache.getAsString("TimeCache");
-                                Log.e("12313132131313",GetTime);
+//                                Log.e(TAG, "0000000000000000");
+//                                Log.e(TAG, M_this.coinipSave.ReturForTime());
+
+                                String GetTime = "0";
+                                if(M_this.coinipSave.ReturForTime().equals("")){
+                                    GetTime="0";
+                                }else {
+
+                                    GetTime=Integer.toString(Integer.parseInt(M_this.coinipSave.ReturForTime()));
+                                }
+//                                forTiem = M_this.coinipSave.ReturForTime();
+//                                Log.e("12313132131313",GetTime);
+//                                Log.e("coinipSave.ferr()",coinipSave.ferr());
 
                                 /*是否免费版 1收费 0是免费*/
                                 if(coinipSave.ferr().equals("")){
-                                    String coins = ";5;" + PackName + ";" + GetTime;
-                                    updsteReader(coins);
+
+
+                                    M_this.Free_Not="01";
+//                                    M_this.In_Game = "02";
+//                                    String coins = ";5;" + PackName + ";" + GetTime;
+                                    String dataw= DATA_HOT+";"+M_this.Free_Not+";"+"02"+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.PackName+";"+M_this.END_CODE;
+
+//                                    M_this.server_socket.SendServer(dataw);
+
+                                    updsteReader(dataw);
                                     Intent intent = new Intent(MainActivity.this, HdmiActivity.class);
                                     startActivity(intent);
                                     isOpne=true;
                                 }
                                 if(coinipSave.ferr().equals("0")){
-                                    String coins = ";5;" + PackName + ";" + GetTime;
-                                    updsteReader(coins);
+                                    M_this.Free_Not="01";
+//                                    M_this.In_Game = "02";
+                                    String dataw= DATA_HOT+";"+M_this.Free_Not+";"+"02"+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.PackName+";"+M_this.END_CODE;
+
+//                                    M_this.server_socket.SendServer(dataw);
+//                                    String coins = ";5;" + PackName + ";" + GetTime;
+                                    updsteReader(dataw);
                                     Intent intent = new Intent(MainActivity.this, HdmiActivity.class);
                                     startActivity(intent);
                                     isOpne=true;
                                 }
                                 if(coinipSave.ferr().equals("1")){
-                                    if (!isTime) {
+                                    M_this.Free_Not="02";
+                                    if (!M_this.isTime) {
                                         showNormalDialogPass();
                                     } else {
-                                        String coins = ";5;" + PackName + ";" + GetTime;
-                                        updsteReader(coins);
+//                                        String coins = ";5;" + PackName + ";" + GetTime;
+                                        String dataw= DATA_HOT+";"+M_this.Free_Not+";"+"02"+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.PackName+";"+M_this.END_CODE;
+
+                                        updsteReader(dataw);
                                         Intent intent = new Intent(MainActivity.this, HdmiActivity.class);
                                         startActivity(intent);
                                         isOpne=true;
                                     }
                                 }
-
-
-
-
-
 //                                Intent launchIntentForPackage=getActivity().getPackageManager().getLaunchIntentForPackage(Packag); // 启动第三方APP
 //                                getActivity().startActivity(launchIntentForPackage);
                             }
@@ -600,7 +632,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             }
 
         }
-
     }
 
     /*没有投币弹出框*/
@@ -630,7 +661,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         // 显示
         normalDialog.show();
     }
-
     /*游戏详情弹出框*/
     private void DiyDialog2() {
 
@@ -734,7 +764,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     protected void onDestroy() {
         super.onDestroy();
         //解除服务绑定和停止服务
-
+        // 释放资源
+//        udpTool.closeSocket();
     }
 
     private void initView() {
@@ -743,26 +774,21 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         p_setting = findViewById(R.id.Page_settings);
         re = findViewById(R.id.home_refresh);
         l_top_onlines = findViewById(R.id.l_top_Onlines);
-
+        receiveMsg = findViewById(R.id.receive_message);
         // Free Mode arrangement
         lferr_mode = findViewById(R.id.ferr_liner);
-
         // time show arrangement
         ltime_liner = findViewById(R.id.time_liner);
-
-
-
+        // 接收信息的函数
+//        udpTool = new UdpTool(this);
 //        testImer = findViewById(R.id.testImer);
 //        but_sss = findViewById(R.id.butsss);
-
 //        coinipSave.changeTimeMillisecond();
         coin = new ipSave();
-
         /*是否免费版 1收费 0是免费*/
         if(coinipSave.ferr().equals("")){
             lferr_mode.setVisibility(View.VISIBLE);
             ltime_liner.setVisibility(View.GONE);
-
         }
         if(coinipSave.ferr().equals("0")){
             lferr_mode.setVisibility(View.VISIBLE);
@@ -772,7 +798,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             lferr_mode.setVisibility(View.GONE);
             ltime_liner.setVisibility(View.VISIBLE);
         }
-
         dialog_opne = findViewById(R.id.dialog_opne);
         xml_time = findViewById(R.id.time_update);
         xml_time.setText(DownGameTimes);
@@ -782,6 +807,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         server_socket = new ServiceActivity();
         mediaPlayer = new MediaPlayer();
         server_socket.NewServerSocket();
+
+        DATA_TIME=Integer.toString(Integer.parseInt(M_this.coinipSave.ReturForTime()));
         p_setting.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -825,11 +852,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         /**
          * *********************************USB开始*********************************
          */
-        M_this = this;
+//        M_this = this;
 
         /*创建socket服务器*/
-
-        Create_server();
+//        Create_server();
 
         /**
          * 获取USB信息
@@ -838,48 +864,91 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         mUsbOtg.connect();
         // 获取设备管理服务
         policyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        new Thread(new MainActivity.ThreadShow()).start();//检测进程，验证消息
+//        new Thread(new MainActivity.ThreadShow()).start();//检测进程，验证消息
+
         if (!isCharging() && !isGameing) {
             MainActivity.M_this.TimeOutShutdown();
         }
         /** 获取缓存时间 */
-        mCache = ACache.get(this);
-        mCache.put("TimeCache", Integer.toString(CountDownGameTimes));
-        String GetTime = mCache.getAsString("TimeCache");
-        if (GetTime.equals("0") || GetTime == null) {
-//            myCountDownTimer.cancel();
-        } else {
-//            myCountDownTimer = new MyCountDownTimer(Integer.parseInt(GetTime), 1000);
-//            myCountDownTimer.start();
+//        mCache = ACache.get(this);
+//        mCache.put("TimeCache", Integer.toString(CountDownGameTimes));
+//        读取文件保存时间
+
+//        String GetTime = mCache.getAsString("TimeCache");
+        if(M_this.coinipSave.ferr().equals("1")){
+            String GetTime = M_this.coinipSave.ReturForTime();
+            if (GetTime.equals("0") || GetTime == null || GetTime == "") {
+                if( myCountDownTimer !=null){
+                    myCountDownTimer.cancel();
+                    isStartTime=false;
+                }
+            } else  {
+                if( myCountDownTimer !=null){
+//                M_this.coinipSave.changeForTime
+                    myCountDownTimer.cancel();
+                }
+                startTime();
+                isStartTime=true;
+            }
         }
+        if(M_this.coinipSave.ferr().equals("0") ||M_this.coinipSave.ferr().equals("")){
+            M_this.coinipSave.changeForTime("0");
+        }
+
         /**
          * 更新UI数据
          */
         Message message = new Message();
         message.what = 9;
         MainActivity.handler.sendMessage(message);
+        /**
+         * udp 数据结束和发送
+         */
+//        try {
+//            udpTool.receiveMessage();;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
+
+    /**
+     * udp 发送数据通信
+     */
+    public void sendMes(String msg,String uip){
+//        Log.e(TAG,msg);
+//        udpTool.sendMessage(msg,uip);
+    }
     /*关闭dialog*/
     public void onButtonClickDialogHide(View view) {
         dialog.hide();
     }
     /*点击打开游戏dialog*/
     public void onButtonClickOpenGames(View view) {
-        String GetTime = mCache.getAsString("TimeCache");
-        Log.e(TAG,GetTime);
 
+//        String GetTime = mCache.getAsString("TimeCache");
+//        Log.e(TAG,GetTime);
+        String GetTime = Integer.toString(Integer.parseInt(M_this.coinipSave.ReturForTime())*1000) ;
         /*是否免费版 1收费 0是免费*/
         if(coinipSave.ferr().equals("")){
-            String coins = ";5;" + PackName + ";" + GetTime;
-            updsteReader(coins);
+
+//            String coins = ";5;" + PackName + ";" + GetTime;
+//            updsteReader(coins);
+
+            M_this.Free_Not="01";
+//                                    M_this.In_Game = "02";
+            String dataw= DATA_HOT+";"+M_this.Free_Not+";"+"02"+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.PackName+";"+M_this.END_CODE;
+            updsteReader(dataw);
+
             Intent intent = new Intent(MainActivity.this, HdmiActivity.class);
             startActivity(intent);
             isOpne=true;
         }
         if(coinipSave.ferr().equals("0")){
-            String coins = ";5;" + PackName + ";" + GetTime;
-            updsteReader(coins);
+            M_this.Free_Not="01";
+//                                    M_this.In_Game = "02";
+            String dataw= DATA_HOT+";"+M_this.Free_Not+";"+"02"+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.PackName+";"+M_this.END_CODE;
+            updsteReader(dataw);
             Intent intent = new Intent(MainActivity.this, HdmiActivity.class);
             startActivity(intent);
             isOpne=true;
@@ -888,14 +957,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
             if (!isTime) {
                 showNormalDialogPass();
             } else {
-                String coins = ";5;" + PackName + ";" + GetTime;
-                updsteReader(coins);
+                String dataw= DATA_HOT+";"+M_this.Free_Not+";"+"02"+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.PackName+";"+M_this.END_CODE;
+                updsteReader(dataw);
                 Intent intent = new Intent(MainActivity.this, HdmiActivity.class);
                 startActivity(intent);
                 isOpne=true;
             }
         }
     }
+
     /*跳转设置页面*/
     private void ClickLongButton() {
         Intent intent = new Intent(MainActivity.this, ipSave.class);
@@ -940,7 +1010,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     /*创建服务器和启动服务端*/
-    private void Create_server() {
+//    private void Create_server() {
 
 //        try {
 //            mServerSocket = new ServerSocket(3217);
@@ -957,7 +1027,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 //            Log.e(TAG,"我是端口我是端口我是断开");
 //            e.printStackTrace();
 //        }
-    }
+//    }
 
     /**
      * 根据不同连接方式发送
@@ -991,20 +1061,38 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 //        wakeLock.acquire(timeOut);
     }
 
+    private static String forTiem;
+    private static String ferrTime;
     // 创建handler
     public static Handler handler = new Handler(Looper.myLooper()) {
+
+
+
         @Override
         public void handleMessage(Message msg) {
+//            Log.e(TAG,""+msg.what);
             switch (msg.what) {
                 case 11://投币
-                       isTime=true; // 是否可以打开游戏
-                        CountDownGameTimes = Integer.parseInt(M_this.mCache.getAsString("TimeCache"));
 
-                        int AddTime = CountDownGameTimes + M_this.coinipSave.changeTimeMillisecond();
+                    isTime=true; // 是否可以打开游戏
 
-                        M_this.mCache.put("TimeCache", Integer.toString(AddTime));
-                        String coins = ";3;3;" + AddTime;
+                    if(M_this.coinipSave.ferr().equals("1")){
+                        forTiem = M_this.coinipSave.ReturForTime();
+                        if(forTiem ==""){
+                            forTiem="0";
+                        }
+                        if(forTiem ==null){
+
+                            forTiem="0";
+                        }
+                        ferrTime = M_this.coinipSave.minutes();
+                        M_this.addTime = Integer.parseInt(forTiem)  + Integer.parseInt(ferrTime) *60;
+                        M_this.coinipSave.changeForTime(Integer.toString(M_this.addTime));
+                       M_this.DATA_TIME = Integer.toString(M_this.addTime);
+                        String coins= M_this.DATA_HOT+";"+M_this.Free_Not+";"+M_this.In_Game+";"+M_this.DATA_TIME+";"+M_this.SK_CONNECTED+";"+M_this.END_CODE;
+//                        String coins = ";3;3;" + √;
                         M_this.updsteReader(coins);
+//                        Log.e("123","7898787878");
                         if (!isStartTime) {
                             M_this.startTime();
                             M_this.isStartTime = true;
@@ -1012,31 +1100,43 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                             M_this.TimeCancles();
                             M_this.startTime();
                         }
-//                    }
-                    break;
-                case 0:
-//                    if(M_this.mServerSocket.isClosed()) {
-//                        Log.e("连接断开了", "0");
-//                    }else {
-//                        Log.e("连接了", "1"+M_this.mServerSocket.isClosed());
-//                        M_this.isCoin_box=false;
-//                    }
-//                    if(!M_this.isCoin_box){
-//                        /*投币器开机发送命令*/
-//                        M_this.Send1(MachineSendType.msgStop);
-//                        M_this.isCoin_box=true;
+                    }
+
+                    //  倒计时文件夹保存时间
+
+//                    Log.e("forTiem",forTiem);
+
+
+//                    Log.e("ferrTime",ferrTime);
+
+//                    Log.e("1111",""+M_this.addTime);
+                    //  缓存时间
+
+//                        CountDownGameTimes = Integer.parseInt(M_this.mCache.getAsString("TimeCache"));
+
+
+//                    M_this.coinipSave.changeTime(Integer.toString(CountDownGameTimes));
+
+//                        M_this.addTime = CountDownGameTimes + M_this.coinipSave.changeTimeMillisecond();
+
+//                        M_this.mCache.put("TimeCache", Integer.toString(M_this.addTime));
+//                        Log.e("manci",""+M_this.addTime);
+
+
 //                    }
                     break;
                 case 1:
+//                    Log.e(TAG,"我在线了");
                     /*开启投币器*/
 //                    M_this.Send1(MachineSendType.msgStart);
 //                    Log.e(TAG,"jlj"+M_this.isCoin_boxup);
+//                    M_this.Send1(MachineSendType.msgStart);
 
-                    if (!M_this.isCoin_boxup) {
-                        if(M_this.coinipSave.ferr().equals("1")){
-                            M_this.Send1(MachineSendType.msgStart);
-                        }
-                    }
+//                    if (!M_this.isCoin_boxup) {
+//                        if(M_this.coinipSave.ferr().equals("1")){
+//                            M_this.Send1(MachineSendType.msgStart);
+//                        }
+//                    }
 
 //                    jamma_start.serverStatusFucn();
                     break; //+
@@ -1060,16 +1160,18 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 //                  Log.e(TAG,"444444444444444444444444444");
                     break;//socket 结束
                 case 5:
-                    Util.restartApp(MainActivity.M_this);
+//                    Util.restartApp(MainActivity.M_this);
                     break;
                 case 6:
                     if (!isServer) {
 
 //                        jamma_start.ServerRestart();
 
-                        Message message = new Message();
-                        message.what = 6;
-                        handler.sendMessageDelayed(message, 10 * 1000);
+//                        Message message = new Message();
+//                        message.what = 6;
+//                        handler.sendMessageDelayed(message, 10 * 1000);
+
+
                     }
 //                    Message receive_MSG = new Message();
 //                    receive_MSG.what = 101;
@@ -1079,9 +1181,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 //                    if (!isGameing) {
 //                        new PlayerSoundPool(3).start();
 //                    }
-                    Message receiveMSG = new Message();
-                    receiveMSG.what = 101;
-                    MainActivity.handler.sendMessageDelayed(receiveMSG, 2000);
+//                    Message receiveMSG = new Message();
+//                    receiveMSG.what = 101;
+//                    MainActivity.handler.sendMessageDelayed(receiveMSG, 2000);
                     break;
                 case 9:
                     /*延迟更新UI页面*/
@@ -1092,8 +1194,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                 case 13:
                     /*socekt 掉线*/
                     M_this.Send1(MachineSendType.msgStop);
-
-                    M_this.restartApp();
+//                    M_this.restartApp();
 
                     break;
                 case 97:
@@ -1121,6 +1222,69 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private void TimeCancles() {
         myCountDownTimer.cancel();
     }
+
+    /**
+     * socket数据处理
+     */
+    public void  socket_data_processing(String rcvMsg){
+        Log.e(TAG,rcvMsg);
+        String[] msgArray = rcvMsg.split(";");
+        Message msg = new Message();
+//        for (int i = 0; i < msgArray.length; i += 1) {
+            if (msgArray[0].substring(msgArray[0].length()-2, msgArray[0].length()).equals("01")&&msgArray[6].equals("11")){
+                M_this.In_Game=msgArray[2];
+//                DATA_TIME=msgArray[3];
+
+
+                if(msgArray[1].equals("01")){
+//                System.out.println( "我是免费模式" );
+
+                }else{
+//                System.out.println( "我是收费模式" );
+
+                }
+                if(msgArray[2].equals("01")){
+//                System.out.println( "我是没有打开游戏" );
+
+
+
+                }else{
+//                System.out.println( "我是打开游戏" );
+                }
+
+                if(msgArray[3].equals("0")){
+//                    System.out.println( "我是0" );
+                }else{
+                    System.out.println(msgArray[3]);
+                }
+                if(msgArray[4].equals("01")){
+                    System.out.println( "第一次连接成功" );
+                    System.out.println(msgArray[4]);
+                    SK_CONNECTED="02";
+                    M_this.Send1(MachineSendType.msgStart);
+
+                    String a = M_this.coinipSave.ReturForTime();
+//                    Log.e("dddddd",a);
+//                    System.out.println(a);
+                    String dataw= DATA_HOT+";"+Free_Not+";"+In_Game+";"+DATA_TIME+";"+SK_CONNECTED+";"+PackName+";"+END_CODE;
+
+//                    M_this.server_socket.SendServer(dataw);
+//
+                }else{
+                    System.out.println( "心疼和其他数据" );
+                    SK_CONNECTED="02";
+//                    String a = M_this.coinipSave.ReturForTime();
+//                    Log.e("dddddd",a);
+//                    System.out.println( a );
+                    String dataw= DATA_HOT+";"+Free_Not+";"+In_Game+";"+DATA_TIME+";"+SK_CONNECTED+";"+END_CODE;
+                    M_this.server_socket.SendServer(dataw);
+                }
+            }
+
+
+
+//        }
+    }
     public  void restartApp() {
 //        Intent intent = new Intent(MainActivity.this, MainActivity.class);
 //        startActivity(intent);
@@ -1134,33 +1298,38 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
     private void startTime() {
 //        Log.e(TAG,"12346796421313");
-        String GetTime = mCache.getAsString("TimeCache");
+//        String GetTime = mCache.getAsString("TimeCache");
+
+//        String GetforTime =Integer.toString(Integer.parseInt(coinipSave.ReturForTime()) *1000);
+//        Log.e("startTime",GetforTime);
 //        int a =Integer.parseInt(GetTime);
-        myCountDownTimer = new MyCountDownTimer(Integer.parseInt(GetTime), 1000);
+        M_this.isTime=true; // 是否可以打开游戏
+        myCountDownTimer = new MyCountDownTimer(Integer.parseInt(coinipSave.ReturForTime()) *1000, 1000);
         myCountDownTimer.start();
+
 //       isStartTime = true;
     }
-    private Handler mHandler = new Handler(Looper.myLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 11111) {
-//                updateVideoView();
-            } else if (msg.what == POWER_OFF_MSG_D) {
-                Log.d("powerOffTest", "handleMessage:isCharging " + isCharging());
-//                powerOnOrNot.setText("是否通电：是");
-                if (!isCharging()) {
-                    try {
-                        Method method = pm.getClass().getDeclaredMethod("shutdown", boolean.class, boolean.class);
-                        method.invoke(pm, false, true);
-                        isShutdown = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    };
+//    private Handler mHandler = new Handler(Looper.myLooper()) {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            if (msg.what == 11111) {
+////                updateVideoView();
+//            } else if (msg.what == POWER_OFF_MSG_D) {
+//                Log.d("powerOffTest", "handleMessage:isCharging " + isCharging());
+////                powerOnOrNot.setText("是否通电：是");
+//                if (!isCharging()) {
+//                    try {
+//                        Method method = pm.getClass().getDeclaredMethod("shutdown", boolean.class, boolean.class);
+//                        method.invoke(pm, false, true);
+//                        isShutdown = true;
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+//    };
 
     /***是否充电*/
     private boolean isCharging() {
@@ -1195,32 +1364,32 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     /**
      * 线程类
      */
-    class ThreadShow implements Runnable {
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            while (true) {
-                try {
-                    updateUI();
-                    if (!isGameing) {
-                        if (MainActivity.Coin < MainActivity.CoinSum) {
-                            //Send1(MachineSendType.msgStop);//FB GUANBI投币器
-                            //Send(MachineSendType.msgStop);//F1关闭上下
-                        } else if (isRandom && Coin >= CoinSum) {
-//                            jamma_start.VideosPicRandom();
-                        }
-                    } else {
-//                         Send(MachineSendType.msgStart);
-                    }
-                    Message msgOtg = new Message();
-//                    msgOtg.what=5;
-                    handler.sendMessage(msgOtg);
-                    Thread.sleep(3000);
-                } catch (Exception e) {
-                }
-            }
-        }
-    }
+//    class ThreadShow implements Runnable {
+//        @Override
+//        public void run() {
+//            // TODO Auto-generated method stub
+//            while (true) {
+//                try {
+////                    updateUI();
+//                    if (!isGameing) {
+//                        if (MainActivity.Coin < MainActivity.CoinSum) {
+//                            //Send1(MachineSendType.msgStop);//FB GUANBI投币器
+//                            //Send(MachineSendType.msgStop);//F1关闭上下
+//                        } else if (isRandom && Coin >= CoinSum) {
+////                            jamma_start.VideosPicRandom();
+//                        }
+//                    } else {
+////                         Send(MachineSendType.msgStart);
+//                    }
+//                    Message msgOtg = new Message();
+////                    msgOtg.what=5;
+//                    handler.sendMessage(msgOtg);
+//                    Thread.sleep(3000);
+//                } catch (Exception e) {
+//                }
+//            }
+//        }
+//    }
 
     /**
      * 更新 服务器UI
@@ -1249,6 +1418,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 //            e.printStackTrace();
 //        }
 //    }
+
+    /*打开投币器*/
+
 
     /**
      * 发送数据
@@ -1388,14 +1560,16 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     public void ReceiveAction(byte type) {
         Message message = new Message();
         message.what = 999;
-        Log.d("powerTest", "ReceiveAction: removeMessages POWER_OFF_MSG ");
-        mHandler.removeCallbacksAndMessages(null);
-        Log.d("powerTest", "type" + type);
+
+//        Log.d("powerTest", "ReceiveAction: removeMessages POWER_OFF_MSG ");
+//        mHandler.removeCallbacksAndMessages(null);
+
+//        Log.d("powerTest", "type" + type);
+
         switch (type) {
             case (byte) 11:
                 message.what = 11;
                 handler.sendMessage(message);
-
                 //new PlayerSoundPool(4).start();
                 break;
             case (byte) 0x1B:
@@ -1504,7 +1678,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
      * 接收数据
      */
     public boolean Receive(byte msg) {
-        Log.e(TAG,"我是USB信息收到投币");
+//        Log.e(TAG,"我是USB信息收到投币");
         boolean isCoin = false;
         if (msg == (byte) 0x1B) {
             isCoin = true;
@@ -1518,11 +1692,30 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         }
         return isCoin;
     }
-
-    private void updateUI() {
-
-
+    public void tb_sercer_open(){
+        Send1(MachineSendType.msgStart);
     }
+    // service off tb
+    public void tb_sercer_of(){
+        Send1(MachineSendType.msgStop);
+    }
+     // 投币开机
+    public void tb_open(){
+//        Log.e("t","212121");
+        byte msg = 0;
+        msg = (byte) 0x80;
+        SocketSend(msg);
+
+//        Send1(MachineSendType.msgStart);
+    }
+    // 投币关闭
+    public void tb_close(){
+        Send1(MachineSendType.msgStop);
+    }
+//    private void updateUI() {
+//
+//
+//    }
 
 
     /**
@@ -1553,12 +1746,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     protected void onStart() {
         super.onStart();
+
+//        Log.e(TAG,"我是重新启动打开udp");
 //        initializePlayer();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+//        Log.e(TAG,"我是onStop关闭udp");
 //        releasePlayer();
     }
 

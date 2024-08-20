@@ -27,10 +27,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     @SuppressWarnings("deprecation")
     Preview(Context context, SurfaceView sv) {
         super(context);
-
         mSurfaceView = sv;
 //        addView(mSurfaceView);
-       
         mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -38,7 +36,6 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         mSurfaceView.setZOrderMediaOverlay(true);
         setBackgroundColor(Color.TRANSPARENT);
     }
-
     public void setCamera(Camera camera) {
     	mCamera = camera;
     	if (mCamera != null) {
@@ -70,7 +67,6 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     		}
     	}
     }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // We purposely disregard child measurements because act as a
